@@ -1,6 +1,6 @@
-import nav from "./nav";
+//import nav from "./nav";
 import socket from './socket'
-import { footer } from "./footer";
+/* import { footer } from "./footer";
 import makeButton from "./button";
 import { makeColorStyle } from "./button-styles";
 import makeImage from "./image";
@@ -15,4 +15,4 @@ button.style = makeColorStyle("cyan");
 
 document.body.appendChild(button);
 document.body.appendChild(image);
-document.body.appendChild(footer);
+document.body.appendChild(footer); */
