@@ -13,15 +13,15 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 // view engine setup
-app.set('views', path.join(__dirname, 'public/views'));
 app.set('view engine', 'ejs');
-app.use(express.static('public'))
-/* eslint-disable no-console */
+app.set('views', path.join(__dirname, 'public/views'));
 
+/* eslint-disable no-console */
+/*
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
+app.use(cookieParser()); */
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', (req, res) => {
@@ -30,6 +30,18 @@ app.get('/', (req, res) => {
 
 app.get('/:room', (req, res) => {
   res.render('index', {roomId: req.params.room})
+})
+app.post('/:room', (req, res) => {
+  console.log(req.body)
+
+})
+io.on('connection', socket => {
+  socket.on('join-room', (roomId, userId)=> {
+    console.log(roomId, userId)
+    socket.on('disconnect', ()=> {
+      socket.to(roomId).broadcast.emit('user-disconnected', userId)
+    })
+  })
 })
 
 // catch 404 and forward to error handler

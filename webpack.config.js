@@ -1,6 +1,7 @@
 const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const webpackMerge = require("webpack-merge");
+const CopyPlugin = require('copy-webpack-plugin');
 
 const modeConfig = env => require(`./build-utils/webpack.${env}`)(env);
 const presetConfig = require("./build-utils/loadPresets");
@@ -22,7 +23,11 @@ module.exports = ({ mode, presets } = { mode: "production", presets: [] }) => {
                 }
               }
             ]
-          }
+          },
+          {
+            test: /\.ejs$/i,
+            use: 'raw-loader',
+          },
         ]
       },
       output: {
@@ -30,12 +35,24 @@ module.exports = ({ mode, presets } = { mode: "production", presets: [] }) => {
         filename: "bundle.js",
         publicPath: "/dist"
       },
-      plugins: [new HtmlWebpackPlugin({
+      plugins: [
+        new CopyPlugin({
+          patterns: [
+            {from: path.join(__dirname, '/src/view'), to: path.join(__dirname, '/public/views')},
+
+          ],
+          options: {
+            concurrency: 100,
+          },
+        }),
+        new HtmlWebpackPlugin({
         filename: path.join(__dirname, '/public/views/index.ejs'),
         template: path.join(__dirname, '/src/view/index.ejs'),
         excludeChunks: [ 'server' ]
 
-        }), new webpack.ProgressPlugin()]
+        }), new webpack.ProgressPlugin(),
+
+      ]
     },
     modeConfig(mode),
     presetConfig({ mode, presets })
