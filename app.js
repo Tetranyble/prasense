@@ -4,6 +4,8 @@ var http = require('http').createServer(app);
 var io = require('socket.io')(http);
 const path = require('path')
 const { v4 } = require('uuid')
+const dotenv = require('dotenv');
+dotenv.config();
 
 
 // view engine setup
@@ -29,6 +31,11 @@ io.on('connection', (socket) => {
   })
 });
 
-http.listen(3000, () => {
-  console.log('listening on *:3000');
+const port = process.env.PORT || '5000';
+http.listen(port, (err) => {
+  if (err) {
+    console.log(err);
+  } else {
+    console.log(`server running at: ${process.env.APP_URL}:${port}`)
+  }
 });
