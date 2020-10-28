@@ -5,6 +5,8 @@ var io = require('socket.io')(http);
 const path = require('path')
 const { v4 } = require('uuid')
 const dotenv = require('dotenv');
+const { ExpressPeerServer: peer } = require('peer');
+
 dotenv.config();
 
 
@@ -30,7 +32,7 @@ io.on('connection', (socket) => {
     })
   })
 });
-
+io.sockets.on("error", e => console.log(e));
 const port = process.env.PORT || '5000';
 http.listen(port, (err) => {
   if (err) {
@@ -39,3 +41,7 @@ http.listen(port, (err) => {
     console.log(`server running at: ${process.env.APP_URL}:${port}`)
   }
 });
+const peerServer = peer(http, {
+  path: '/peer'
+});
+app.use('/peer', peerServer);

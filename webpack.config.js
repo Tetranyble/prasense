@@ -39,6 +39,7 @@ module.exports = ({ mode, presets } = { mode: "production", presets: [] }) => {
         new CopyPlugin({
           patterns: [
             {from: path.join(__dirname, '/src/view'), to: path.join(__dirname, '/public/views')},
+            {from: path.join(__dirname, '/src/lib'), to: path.join(__dirname, '/public/lib/js')},
 
           ],
           options: {

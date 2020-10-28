@@ -3,8 +3,8 @@ const io = require('socket.io-client')
 const socket = io()
 
 const peer = new Peer(undefined,{
-  host: '/',
-  port: '3001'
+  host: '/peer/peer',
+  port: '3000'
 })
 const peers = {}
 const videoContainer = document.getElementById('video-grid')

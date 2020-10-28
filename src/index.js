@@ -1,5 +1,7 @@
 //import nav from "./nav";
-import socket from './socket'
+import socket from 'socket.io-client'
+import RTCConnection from './RTCConnection'
+
 /* import { footer } from "./footer";
 import makeButton from "./button";
 import { makeColorStyle } from "./button-styles";
