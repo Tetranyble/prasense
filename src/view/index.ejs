@@ -1,18 +1,13 @@
-<!DOCTYPE html>
-<html>
-  <head>
-  <title>Presence -- Classroom experience online</title>
-</head>
-<body>
-  <video id="localStream" width="300"></video>
-  <br>
-  <video id="friendStream" width="300"></video>
-  <br>
-  <textarea rows="3" cols="100" id="txtMySignal"></textarea>
-  <br>
-  <input type="text" placeholder="your friend's signal" id="txtFriendSignal">
-  <br>
-  <button id="btnConnect">Connect</button>
-  <script src='/lib/js/adapter.js'></script>
-</body>
+<!doctype html>
+<html lang="en">
+	<head>
+    <title>Presences -- Classroom experience online</title>
+    <script>const roomId = "<%= roomId %>"</script>
+  </head>
+	<body>
+		<!-- <canvas id="theCanvas" width="640" height="480">
+			Attention! Your browser does not support the Canvas.
+    </canvas> -->
+    <div id="video-grid"></div>
+	</body>
 </html>

@@ -31,10 +31,7 @@ app.get('/', (req, res) => {
 app.get('/:room', (req, res) => {
   res.render('index', {roomId: req.params.room})
 })
-app.post('/:room', (req, res) => {
-  console.log(req.body)
 
-})
 io.on('connection', socket => {
   socket.on('join-room', (roomId, userId)=> {
     console.log(roomId, userId)
