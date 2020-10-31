@@ -18,28 +18,31 @@ app.get('/', (req, res) => {
   res.redirect(`/${v4()}`)
 });
 app.get('/:room', (req, res) => {
-  rooms[req.params.room] = []
-  res.render('index', {roomId: req.params.room})
+  if (rooms[req.params.room]) {
+    const room = rooms[req.params.room]
+    room.start = false
+    console.log(room)
+    res.render('index', { roomId: room } )
+  }else{
+    const roomConfig = {start: true, signal: "", roomId: req.params.room}
+    rooms[req.params.room] = roomConfig
+    res.render('index', { roomId: roomConfig })
+    console.log(rooms)
+  }
+
 })
-
-/* io.on('connection', socket => {
-
-   socket.on("call", caller => socket.emit('receiver', {signal: caller.initiatorSignal, from: caller.from }))
-   socket.on('acceptedCall', acceptance => {
-     console.log(acceptance)
-     socket.emit('calledUserHasAcceptedCall', acceptance.initiatorSignal)
-   })
-
-}); */
-//socket.on('connection', acceptance => socket.to(acceptance.to).emit('calledUserHasAcceptedCall', acceptance.initiatorSignal))
 io.on('connection', socket => {
-  socket.on('call', caller =>{
-    if(!rooms[caller.roomId].length) socket.emit('newConversation', caller)
-  })
+
   socket.on('classroom', user => {
-    rooms[user.roomId].push(user)
-    socket.join(user.roomId)
-    socket.emit('joinClassroomRequest', user)
+    if(!rooms[user.room]){
+      rooms[user.roomId].push(user)
+      console.log('room found')
+    } else {
+      socket.join(user.roomId)
+      socket.to(user.roomId).broadcast.emit('joinClassroomRequest', user)
+    }
+
+
 
   })
 })

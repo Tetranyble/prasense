@@ -2,12 +2,57 @@
 <html lang="en">
 	<head>
     <title>Presences -- Classroom experience online</title>
-    <script>const roomId = "<%= roomId %>"</script>
+    <script>
+    const roomId = "<%= roomId.roomId %>"
+    const start = "<%= roomId.start %>"
+    const signal = "<%= roomId.signal %>"
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/simple-peer/9.8.0/simplepeer.min.js"></script>
+    <script>
+
+     window.addEventListener('DOMContentLoaded', e => {
+      const s = navigator.getUserMedia({audio: false, video: true},s => console.log(s),e =>{console.log(e)})
+      const peer = new SimplePeer({
+    initiator: true,
+    trickle: false,
+    config: {
+
+      iceServers: [
+          {
+              urls: "stun:numb.viagenie.ca",
+              username: "sultan1640@gmail.com",
+              credential: "98376683"
+          },
+          {
+              urls: "turn:numb.viagenie.ca",
+              username: "sultan1640@gmail.com",
+              credential: "98376683"
+          }
+      ]
+  },
+    stream: s
+  })
+
+   /**
+     * On return from the simple-peer server this method is call
+     * with peer configuration token for another user/student
+     * to use it's configuration to find itself on the stun/turn server
+     * on which the other user will use and connect to this peer
+     */
+    peer.on('signal', token => socket.emit('classroom', { room: config.roomId , token: token, from: v4() }))
+    peer.on('error', error => console.log(error))
+    peer['initiator'] = peer
+    socket.on("joinClassroomRequest", signal => {
+      peer.signal(signal.token);
+    })
+     })
+    </script>
   </head>
 	<body>
 		<!-- <canvas id="theCanvas" width="640" height="480">
 			Attention! Your browser does not support the Canvas.
     </canvas> -->
     <div id="video-grid"></div>
+    <button id="startCall" >New Call</button>
 	</body>
 </html>
